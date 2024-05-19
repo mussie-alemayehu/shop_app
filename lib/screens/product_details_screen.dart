@@ -6,6 +6,8 @@ import '../providers/products_provider.dart';
 class ProductDetailsScreen extends StatelessWidget {
   static const routeName = '/product_details';
 
+  const ProductDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final String productId =

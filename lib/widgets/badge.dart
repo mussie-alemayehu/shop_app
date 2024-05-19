@@ -4,7 +4,8 @@ class Badge extends StatelessWidget {
   final Widget child;
   final int itemCount;
 
-  Badge({
+  const Badge({
+    super.key,
     required this.child,
     required this.itemCount,
   });

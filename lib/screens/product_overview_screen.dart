@@ -14,6 +14,8 @@ enum FilterOptions {
 }
 
 class ProductOverviewScreen extends StatefulWidget {
+  const ProductOverviewScreen({super.key});
+
   @override
   State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
 }
@@ -112,7 +114,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ),
             )
           : ProductGrid(_favoriteOnly),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }

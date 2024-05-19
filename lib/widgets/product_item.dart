@@ -7,6 +7,8 @@ import '../providers/auth.dart';
 import '../screens/product_details_screen.dart';
 
 class ProductItem extends StatelessWidget {
+  const ProductItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context, listen: false);

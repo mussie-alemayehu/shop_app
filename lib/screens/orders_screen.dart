@@ -8,6 +8,8 @@ import '../providers/order_provider.dart';
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/orders';
 
+  const OrdersScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +54,7 @@ class OrdersScreen extends StatelessWidget {
               );
             }
           }),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }

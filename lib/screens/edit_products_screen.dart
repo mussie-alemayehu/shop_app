@@ -7,6 +7,8 @@ import '../providers/product.dart';
 class EditProductsScreen extends StatefulWidget {
   static const routeName = '/edit_products';
 
+  const EditProductsScreen({super.key});
+
   @override
   State<EditProductsScreen> createState() => _EditProductsScreenState();
 }

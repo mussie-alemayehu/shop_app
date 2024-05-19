@@ -7,7 +7,7 @@ import './product_item.dart';
 class ProductGrid extends StatelessWidget {
   final bool favoriteOnly;
 
-  ProductGrid(this.favoriteOnly);
+  const ProductGrid(this.favoriteOnly, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ProductGrid extends StatelessWidget {
       ),
       itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
         value: products[index],
-        child: ProductItem(),
+        child: const ProductItem(),
       ),
       itemCount: products.length,
     );

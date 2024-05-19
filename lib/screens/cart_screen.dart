@@ -8,6 +8,8 @@ import '../providers/cart_provider.dart' hide CartItem;
 class CartScreen extends StatefulWidget {
   static const routeName = '/Cart';
 
+  const CartScreen({super.key});
+
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -72,7 +74,6 @@ class _CartScreenState extends State<CartScreen> {
                                   _isLoading = false;
                                 });
                               } catch (error) {
-                                print(error);
                                 if (context.mounted) {
                                   await showDialog(
                                     context: context,

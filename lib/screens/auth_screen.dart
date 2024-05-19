@@ -11,6 +11,8 @@ enum AuthMode { login, signUp }
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 
+  const AuthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);

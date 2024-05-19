@@ -9,7 +9,7 @@ class UserProductsListItem extends StatelessWidget {
   final String title;
   final String imageUrl;
 
-  UserProductsListItem(this.id, this.title, this.imageUrl);
+  const UserProductsListItem(this.id, this.title, this.imageUrl, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class UserProductsListItem extends StatelessWidget {
             backgroundImage: NetworkImage(imageUrl),
           ),
           title: Text(title),
-          trailing: Container(
+          trailing: SizedBox(
             width: 100,
             child: Row(children: [
               IconButton(
