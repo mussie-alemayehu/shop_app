@@ -42,8 +42,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# files with api keys
+# files with secret keys
 lib/providers/auth.dart
+firebase.json
+lib/firebase_options.dart
+android/app/google-services.json
 
 # we won't need the windows and linux and macos files here
 /windows/
