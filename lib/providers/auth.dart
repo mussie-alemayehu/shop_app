@@ -36,7 +36,7 @@ class Auth with ChangeNotifier {
     String password,
     String accessMode,
   ) async {
-    final apiKey = Keys.apiKey;
+    const apiKey = Keys.apiKey;
 
     try {
       final url = Uri.parse(

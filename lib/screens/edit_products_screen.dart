@@ -22,7 +22,6 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
   var _isInit = true;
   var _isLoading = false;
   var _productId = '';
-  // var _initialValues = {};
   var _newProduct = Product(
     id: '',
     title: '',

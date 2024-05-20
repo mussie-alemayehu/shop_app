@@ -87,11 +87,6 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addItem(Product product) async {
-    // var url = Uri.https(
-    //   'flutter-app-d20fe-default-rtdb.firebaseio.com',
-    //   '/products.json',
-    //   {'auth': token},
-    // );
     var url = Uri.parse(
         'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
     try {
@@ -120,11 +115,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> deleteItem(String productId) async {
     var url = Uri.parse(
         'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
-    // var url = Uri.https(
-    //   'flutter-app-d20fe-default-rtdb.firebaseio.com',
-    //   '/products/$productId.json',
-    //   {'auth': token},
-    // );
+
     final existingProductIndex =
         _items.indexWhere((product) => product.id == productId);
     final existingProduct = _items[existingProductIndex];

@@ -107,10 +107,6 @@ class _CartScreenState extends State<CartScreen> {
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.grey),
                     ),
-                    // TextButton.styleFrom(
-                    //   disabledBackgroundColor: Colors.grey,
-                    //   disabledForegroundColor: Colors.amber,
-                    // ),
                     child: _isLoading
                         ? CircularProgressIndicator(
                             color: Theme.of(context).primaryColor,

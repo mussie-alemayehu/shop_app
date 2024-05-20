@@ -189,7 +189,6 @@ class _FormCardState extends State<FormCard>
       child: Card(
         elevation: 10,
         child: AnimatedContainer(
-          // height: _heightAnimation!.value.height,
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeIn,
           height: _authMode == AuthMode.login ? 260 : 330,
@@ -269,8 +268,6 @@ class _FormCardState extends State<FormCard>
                       _userInfo['password'] = newValue;
                     },
                   ),
-                  // if (_authMode == AuthMode.signUp)
-                  //
                   AnimatedContainer(
                     constraints: BoxConstraints(
                       maxHeight: _authMode == AuthMode.login ? 0 : 120,
@@ -324,8 +321,6 @@ class _FormCardState extends State<FormCard>
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
-
-                              // color:
                             ),
                             backgroundColor: MaterialStatePropertyAll(
                               Theme.of(context).primaryColor,
