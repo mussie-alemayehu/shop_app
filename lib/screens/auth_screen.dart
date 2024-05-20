@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/http_exception.dart';
 import '../providers/auth.dart';
@@ -152,15 +151,9 @@ class _FormCardState extends State<FormCard>
         });
         _form.currentState!.save();
         if (_authMode == AuthMode.login) {
-          await Provider.of<Auth>(context, listen: false).login(
-            _userInfo['email'] as String,
-            _userInfo['password'] as String,
-          );
+          await Auth.login(_userInfo);
         } else {
-          await Provider.of<Auth>(context, listen: false).signUp(
-            _userInfo['email'] as String,
-            _userInfo['password'] as String,
-          );
+          await Auth.signup(_userInfo);
         }
       } on HttpException catch (error) {
         var message = 'Authentication failed.';
