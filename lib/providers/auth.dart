@@ -21,7 +21,7 @@ class Auth {
   }
 
   // logout
-  Future<void> logout() async {
+  static Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
 }
