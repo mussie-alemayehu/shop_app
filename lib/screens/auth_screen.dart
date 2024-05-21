@@ -310,15 +310,15 @@ class _FormCardState extends State<FormCard>
                       : ElevatedButton(
                           onPressed: _saveForm,
                           style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
+                            shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
                             ),
-                            backgroundColor: MaterialStatePropertyAll(
+                            backgroundColor: WidgetStatePropertyAll(
                               Theme.of(context).primaryColor,
                             ),
-                            foregroundColor: const MaterialStatePropertyAll(
+                            foregroundColor: const WidgetStatePropertyAll(
                               Colors.white,
                             ),
                           ),
@@ -340,7 +340,7 @@ class _FormCardState extends State<FormCard>
                       );
                     },
                     style: ButtonStyle(
-                      foregroundColor: MaterialStatePropertyAll(
+                      foregroundColor: WidgetStatePropertyAll(
                         Theme.of(context).primaryColor,
                       ),
                     ),

@@ -105,7 +105,7 @@ class _CartScreenState extends State<CartScreen> {
                             }
                           },
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(Colors.grey),
+                      foregroundColor: WidgetStateProperty.all(Colors.grey),
                     ),
                     child: _isLoading
                         ? CircularProgressIndicator(

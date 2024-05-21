@@ -1,23 +1,11 @@
-// import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
 import 'package:firebase_database/firebase_database.dart';
 
 import './product.dart';
-// import '../models/http_exception.dart';
 
 class ProductsProvider with ChangeNotifier {
   List<Product> _items = [];
-
-  // final String token;
-  // final String userId;
-
-  // ProductsProvider(
-  //   this.token,
-  //   this.userId,
-  //   this._items,
-  // );
 
   var _isFavorite = false;
 
@@ -42,56 +30,56 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((product) => product.id == id);
   }
 
+  // to initialize data at the begining of the app
   Future<void> fetchAndSetData([bool creatorOnly = false]) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    /// initialize firebase realtime database instance
     final database = FirebaseDatabase.instance;
     database.setPersistenceEnabled(true);
 
-    final dataSnapshot = await database.ref('procuts').get();
-    print('dataSnapshot: $dataSnapshot');
+    final Map<String, Product> loadedProducts = {};
 
-    // try {
-    //   var filterOption =
-    //       creatorOnly ? '&orderBy="creatorId"&equalTo="$userId"' : '';
-    //   var url = Uri.parse(
-    //     'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token$filterOption',
-    //   );
+    // initialize a stream of products that will update whenever there is an
+    // update in the database
+    final ref = database.ref('products');
+    ref.onValue.listen((event) {
+      final values = event.snapshot.value as Map?;
+      if (values != null) {
+        values.forEach(
+          (key, value) => loadedProducts[key] = Product(
+            id: key,
+            title: values[key]['title'],
+            description: values[key]['description'],
+            price: values[key]['price'],
+            imageUrl: values[key]['imageUrl'],
+          ),
+        );
+      }
 
-    //   List<Product> loadedProducts = [];
-    //   final response = await http.get(url);
-    //   final extractedData = jsonDecode(response.body) as Map<String, dynamic>?;
-    //   if (extractedData == null) {
-    //     return;
-    //   }
+      // set the items list to the extracted list of products
+      _items = loadedProducts.values.toList();
 
-    //   url = Uri.https(
-    //     'flutter-app-d20fe-default-rtdb.firebaseio.com',
-    //     '/userFavorites/$userId.json',
-    //     {'auth': token},
-    //   );
-    //   final favoriteMealsResponse = await http.get(url);
-    //   final favoriteMeals = json.decode(favoriteMealsResponse.body);
+      notifyListeners();
+    });
 
-    //   extractedData.forEach((key, product) {
-    //     loadedProducts.add(
-    //       Product(
-    //         id: key,
-    //         title: product['title'],
-    //         description: product['description'],
-    //         price: product['price'],
-    //         imageUrl: product['imageUrl'],
-    //         isFavorite: favoriteMeals == null
-    //             ? false
-    //             : favoriteMeals[key] == null
-    //                 ? false
-    //                 : favoriteMeals[key] as bool,
-    //       ),
-    //     );
-    //   });
-    //   _items = loadedProducts;
-    //   notifyListeners();
-    // } catch (error) {
-    //   rethrow;
-    // }
+    // create a stream of favorite items
+    final userFavoriteRef = database.ref('userFavorites/$uid/');
+    userFavoriteRef.onValue.listen((event) {
+      final favoriteValues = event.snapshot.value as Map?;
+      if (favoriteValues != null) {
+        favoriteValues.forEach((favoriteKey, favoriteValue) {
+          // update favorite state if the item is in the loaded products
+          if (loadedProducts.keys.contains(favoriteKey)) {
+            loadedProducts[favoriteKey]!.isFavorite = favoriteValue;
+          }
+        });
+      }
+      // set the items list to the extracted list of products
+      _items = loadedProducts.values.toList();
+
+      notifyListeners();
+    });
   }
 
   Future<void> addItem(Product product) async {
