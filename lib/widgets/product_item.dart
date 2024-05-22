@@ -3,17 +3,16 @@ import 'package:provider/provider.dart';
 
 import '../providers/cart_provider.dart';
 import '../providers/product.dart';
-// import '../providers/auth.dart';
 import '../screens/product_details_screen.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({super.key});
+  final Product product;
+
+  const ProductItem(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context, listen: false);
-    final product = Provider.of<Product>(context, listen: false);
-    // final authData = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -28,25 +27,24 @@ class ProductItem extends StatelessWidget {
         child: GridTile(
           footer: GridTileBar(
             backgroundColor: Colors.black87,
-            leading: Consumer<Product>(
-              builder: (ctx, product, _) => IconButton(
-                icon: Icon(
-                  product.isFavorite
-                      ? Icons.favorite
-                      : Icons.favorite_border_outlined,
-                ),
-                color: Theme.of(context).colorScheme.secondary,
-                onPressed: () => product.toggleFavorite().catchError((error) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Unable to complete.',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                }),
+            leading: IconButton(
+              icon: Icon(
+                product.isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border_outlined,
               ),
+              color: Theme.of(context).colorScheme.secondary,
+              onPressed: () => {},
+              // product.toggleFavorite().catchError((error) {
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(
+              //       content: Text(
+              //         'Unable to complete.',
+              //         textAlign: TextAlign.center,
+              //       ),
+              //     ),
+              //   );
+              // }),
             ),
             title: FittedBox(
               fit: BoxFit.scaleDown,
@@ -83,8 +81,7 @@ class ProductItem extends StatelessWidget {
           child: Hero(
             tag: product.id,
             child: FadeInImage(
-              placeholder:
-                  const AssetImage('lib/images/icons8-new-product-96.png'),
+              placeholder: const AssetImage('assets/placeholder.png'),
               image: NetworkImage(product.imageUrl),
               fit: BoxFit.cover,
             ),

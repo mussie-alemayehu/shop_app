@@ -31,7 +31,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<ProductsProvider>(context).fetchAndSetData().then((_) {
+      Provider.of<ProductsProvider>(context, listen: false)
+          .fetchAndSetData()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -64,6 +66,8 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final products = Provider.of<ProductsProvider>(context).items;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('My App'),
@@ -113,7 +117,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 color: Theme.of(context).primaryColor,
               ),
             )
-          : ProductGrid(_favoriteOnly),
+          : ProductGrid(
+              _favoriteOnly
+                  ? products.where((product) => product.isFavorite).toList()
+                  : products,
+            ),
       drawer: const AppDrawer(),
     );
   }

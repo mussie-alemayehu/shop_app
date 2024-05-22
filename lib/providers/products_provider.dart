@@ -46,14 +46,25 @@ class ProductsProvider with ChangeNotifier {
     ref.onValue.listen((event) {
       final values = event.snapshot.value as Map?;
       if (values != null) {
+        final loadedProductKeys = loadedProducts.keys.toList();
+
+        // delete no longer existing products from the local list
+        loadedProductKeys.map((key) {
+          if (!values.containsKey(key)) {
+            loadedProducts.remove(key);
+          }
+        });
+
         values.forEach(
-          (key, value) => loadedProducts[key] = Product(
-            id: key,
-            title: values[key]['title'],
-            description: values[key]['description'],
-            price: values[key]['price'],
-            imageUrl: values[key]['imageUrl'],
-          ),
+          (key, value) {
+            loadedProducts[key] = Product(
+              id: key,
+              title: values[key]['title'],
+              description: values[key]['description'],
+              price: values[key]['price'].toDouble(),
+              imageUrl: values[key]['imageUrl'],
+            );
+          },
         );
       }
 
@@ -83,6 +94,18 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> addItem(Product product) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // create an instance of the firebase database
+    final database = FirebaseDatabase.instance;
+    await database.ref('products/').push().set({
+      'title': product.title,
+      'description': product.description,
+      'price': product.price,
+      'imageUrl': product.imageUrl,
+      'creatorId': uid,
+    });
+
     // var url = Uri.parse(
     //     'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
     // try {
