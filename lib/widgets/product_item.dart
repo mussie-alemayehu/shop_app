@@ -34,7 +34,9 @@ class ProductItem extends StatelessWidget {
                     : Icons.favorite_border_outlined,
               ),
               color: Theme.of(context).colorScheme.secondary,
-              onPressed: () => {},
+              onPressed: () async {
+                await product.toggleFavorite();
+              },
               // product.toggleFavorite().catchError((error) {
               //   ScaffoldMessenger.of(context).showSnackBar(
               //     const SnackBar(

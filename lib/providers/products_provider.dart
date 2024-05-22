@@ -105,30 +105,6 @@ class ProductsProvider with ChangeNotifier {
       'imageUrl': product.imageUrl,
       'creatorId': uid,
     });
-
-    // var url = Uri.parse(
-    //     'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
-    // try {
-    //   final response = await http.post(url,
-    //       body: json.encode({
-    //         'title': product.title,
-    //         'description': product.description,
-    //         'price': product.price,
-    //         'imageUrl': product.imageUrl,
-    //         'creatorId': userId,
-    //       }));
-    //   final newProduct = Product(
-    //     id: json.decode(response.body)['name'],
-    //     title: product.title,
-    //     description: product.description,
-    //     price: product.price,
-    //     imageUrl: product.imageUrl,
-    //   );
-    //   _items.add(newProduct);
-    //   notifyListeners();
-    // } catch (error) {
-    //   rethrow;
-    // }
   }
 
   Future<void> deleteItem(String productId) async {
