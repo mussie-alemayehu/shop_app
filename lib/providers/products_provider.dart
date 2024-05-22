@@ -6,6 +6,9 @@ import './product.dart';
 
 class ProductsProvider with ChangeNotifier {
   List<Product> _items = [];
+  List<Product> _currentUserProducts = [];
+
+  final database = FirebaseDatabase.instance;
 
   var _isFavorite = false;
 
@@ -26,6 +29,10 @@ class ProductsProvider with ChangeNotifier {
     return [..._items];
   }
 
+  List<Product> get currentUserProducts {
+    return [..._currentUserProducts];
+  }
+
   Product findById(String id) {
     return _items.firstWhere((product) => product.id == id);
   }
@@ -34,8 +41,6 @@ class ProductsProvider with ChangeNotifier {
   Future<void> fetchAndSetData([bool creatorOnly = false]) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    /// initialize firebase realtime database instance
-    final database = FirebaseDatabase.instance;
     database.setPersistenceEnabled(true);
 
     final Map<String, Product> loadedProducts = {};
@@ -59,6 +64,7 @@ class ProductsProvider with ChangeNotifier {
           (key, value) {
             loadedProducts[key] = Product(
               id: key,
+              creatorId: value['creatorId'],
               title: values[key]['title'],
               description: values[key]['description'],
               price: values[key]['price'].toDouble(),
@@ -70,6 +76,11 @@ class ProductsProvider with ChangeNotifier {
 
       // set the items list to the extracted list of products
       _items = loadedProducts.values.toList();
+
+      // update the currentUserProducts when the products change
+      _currentUserProducts = loadedProducts.values
+          .where((value) => value.creatorId == uid)
+          .toList();
 
       notifyListeners();
     });
@@ -96,8 +107,6 @@ class ProductsProvider with ChangeNotifier {
   Future<void> addItem(Product product) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    // create an instance of the firebase database
-    final database = FirebaseDatabase.instance;
     await database.ref('products/').push().set({
       'title': product.title,
       'description': product.description,
@@ -130,26 +139,13 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> editItem(String id, Product newProduct) async {
-    //   final indexEdited = _items.indexWhere((product) => product.id == id);
-    //   var url = Uri.parse(
-    //       'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
-
-    //   if (indexEdited >= 0) {
-    //     try {
-    //       await http.patch(
-    //         url,
-    //         body: json.encode({
-    //           'title': newProduct.title,
-    //           'description': newProduct.description,
-    //           'price': newProduct.price,
-    //           'imageUrl': newProduct.imageUrl,
-    //         }),
-    //       );
-    //     } catch (error) {
-    //       rethrow;
-    //     }
-    //     _items[indexEdited] = newProduct;
-    //     notifyListeners();
-    //   }
+    await database.ref('products/$id/').update(
+      {
+        'title': newProduct.title,
+        'description': newProduct.description,
+        'price': newProduct.price,
+        'imageUrl': newProduct.imageUrl,
+      },
+    );
   }
 }

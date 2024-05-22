@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
   var _isLoading = false;
   var _productId = '';
   var _newProduct = Product(
+    creatorId: FirebaseAuth.instance.currentUser!.uid,
     id: '',
     title: '',
     description: '',
@@ -140,6 +142,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
                         },
                         onSaved: (value) {
                           _newProduct = Product(
+                            creatorId: _newProduct.creatorId,
                             id: _newProduct.id,
                             title: value!,
                             description: _newProduct.description,
@@ -175,6 +178,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
                         },
                         onSaved: (value) {
                           _newProduct = Product(
+                            creatorId: _newProduct.creatorId,
                             id: _newProduct.id,
                             title: _newProduct.title,
                             description: _newProduct.description,
@@ -202,6 +206,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
                         },
                         onSaved: (value) {
                           _newProduct = Product(
+                            creatorId: _newProduct.creatorId,
                             id: _newProduct.id,
                             title: _newProduct.title,
                             description: value!,
@@ -258,6 +263,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
                               },
                               onSaved: (value) {
                                 _newProduct = Product(
+                                  creatorId: _newProduct.creatorId,
                                   id: _newProduct.id,
                                   title: _newProduct.title,
                                   description: _newProduct.description,

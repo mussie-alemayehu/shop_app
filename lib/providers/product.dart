@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class Product {
   final String id;
+  final String creatorId;
   final String title;
   final String description;
   final double price;
@@ -11,6 +12,7 @@ class Product {
 
   Product({
     required this.id,
+    required this.creatorId,
     required this.title,
     required this.description,
     required this.price,

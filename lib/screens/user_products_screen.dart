@@ -36,10 +36,7 @@ class UserProductsScreen extends StatelessWidget {
       ),
       drawer: const AppDrawer(),
       body: FutureBuilder(
-        future: Provider.of<ProductsProvider>(
-          context,
-          listen: false,
-        ).fetchAndSetData(true),
+        future: _refreshProducts(context),
         builder: (ctx, snapshot) =>
             snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -52,11 +49,11 @@ class UserProductsScreen extends StatelessWidget {
                       onRefresh: () => _refreshProducts(context),
                       color: Theme.of(context).primaryColor,
                       child: ListView.builder(
-                        itemCount: productsData.items.length,
+                        itemCount: productsData.currentUserProducts.length,
                         itemBuilder: (_, index) => UserProductsListItem(
-                          productsData.items[index].id,
-                          productsData.items[index].title,
-                          productsData.items[index].imageUrl,
+                          productsData.currentUserProducts[index].id,
+                          productsData.currentUserProducts[index].title,
+                          productsData.currentUserProducts[index].imageUrl,
                         ),
                       ),
                     ),
