@@ -33,6 +33,7 @@ class ProductsProvider with ChangeNotifier {
     return [..._currentUserProducts];
   }
 
+  // to find products by id
   Product findById(String id) {
     return _items.firstWhere((product) => product.id == id);
   }
@@ -40,50 +41,72 @@ class ProductsProvider with ChangeNotifier {
   // to initialize data at the begining of the app
   Future<void> fetchAndSetData([bool creatorOnly = false]) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-
     database.setPersistenceEnabled(true);
 
     final Map<String, Product> loadedProducts = {};
+    final ref = database.ref('products');
+
+    // initialize a listener that will fire whenever a child is removed from the
+    // database
+    ref.onChildRemoved.listen(
+      (event) {
+        final value = (event.snapshot.value as Map);
+
+        // delete the product that was just deleted from the firebase database
+        // from the local list
+        loadedProducts.removeWhere((id, product) {
+          final bool delete = product.creatorId == value['creatorId'] &&
+              product.description == value['description'] &&
+              product.title == value['title'] &&
+              product.price == value['price'] &&
+              product.imageUrl == value['imageUrl'];
+          return delete;
+        });
+
+        // set the items list to the extracted list of products
+        _items = loadedProducts.values.toList();
+
+        // update the currentUserProducts when the products change
+        _currentUserProducts = loadedProducts.values
+            .where((value) => value.creatorId == uid)
+            .toList();
+
+        notifyListeners();
+      },
+    );
 
     // initialize a stream of products that will update whenever there is an
     // update in the database
-    final ref = database.ref('products');
-    ref.onValue.listen((event) {
-      final values = event.snapshot.value as Map?;
-      if (values != null) {
-        final loadedProductKeys = loadedProducts.keys.toList();
+    ref.onValue.listen(
+      (event) {
+        final values = event.snapshot.value as Map?;
+        if (values != null) {
+          // convert the obtained values to product items
+          values.forEach(
+            (key, value) {
+              loadedProducts[key] = Product(
+                id: key,
+                creatorId: value['creatorId'],
+                title: values[key]['title'],
+                description: values[key]['description'],
+                price: values[key]['price'].toDouble(),
+                imageUrl: values[key]['imageUrl'],
+              );
+            },
+          );
+        }
 
-        // delete no longer existing products from the local list
-        loadedProductKeys.map((key) {
-          if (!values.containsKey(key)) {
-            loadedProducts.remove(key);
-          }
-        });
+        // set the items list to the extracted list of products
+        _items = loadedProducts.values.toList();
 
-        values.forEach(
-          (key, value) {
-            loadedProducts[key] = Product(
-              id: key,
-              creatorId: value['creatorId'],
-              title: values[key]['title'],
-              description: values[key]['description'],
-              price: values[key]['price'].toDouble(),
-              imageUrl: values[key]['imageUrl'],
-            );
-          },
-        );
-      }
+        // update the currentUserProducts when the products change
+        _currentUserProducts = loadedProducts.values
+            .where((value) => value.creatorId == uid)
+            .toList();
 
-      // set the items list to the extracted list of products
-      _items = loadedProducts.values.toList();
-
-      // update the currentUserProducts when the products change
-      _currentUserProducts = loadedProducts.values
-          .where((value) => value.creatorId == uid)
-          .toList();
-
-      notifyListeners();
-    });
+        notifyListeners();
+      },
+    );
 
     // create a stream of favorite items
     final userFavoriteRef = database.ref('userFavorites/$uid/');
@@ -104,6 +127,7 @@ class ProductsProvider with ChangeNotifier {
     });
   }
 
+  // to add items to the firebase database
   Future<void> addItem(Product product) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -116,28 +140,14 @@ class ProductsProvider with ChangeNotifier {
     });
   }
 
+  // to delete items from the firebase database
   Future<void> deleteItem(String productId) async {
-    // var url = Uri.parse(
-    //     'https://flutter-app-d20fe-default-rtdb.firebaseio.com/products.json?auth=$token');
+    await database.ref('products/$productId/').remove();
 
-    // final existingProductIndex =
-    //     _items.indexWhere((product) => product.id == productId);
-    // final existingProduct = _items[existingProductIndex];
-    // _items.removeAt(existingProductIndex);
-    // notifyListeners();
-    // try {
-    //   final response = await http.delete(url);
-    //   if (response.statusCode >= 400) {
-    //     throw HttpException('Deleting could not be performed.');
-    //   }
-    // } catch (error) {
-    //   _items.insert(existingProductIndex, existingProduct);
-    //   notifyListeners();
-    //   rethrow;
-    // }
-    // notifyListeners();
+    notifyListeners();
   }
 
+  // to edit items from the database
   Future<void> editItem(String id, Product newProduct) async {
     await database.ref('products/$id/').update(
       {

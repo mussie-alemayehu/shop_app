@@ -43,7 +43,6 @@ app.*.map.json
 /android/app/release
 
 # files with secret keys
-lib/keys.dart
 firebase.json
 lib/firebase_options.dart
 android/app/google-services.json
