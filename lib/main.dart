@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// import './screens/splash_screen.dart';
 import './firebase_options.dart';
 import './screens/auth_screen.dart';
 import './screens/orders_screen.dart';
@@ -15,7 +14,6 @@ import './screens/edit_products_screen.dart';
 import './providers/cart_provider.dart';
 import './providers/products_provider.dart';
 import './providers/order_provider.dart';
-// import './providers/auth.dart';
 import './helpers/custom_route.dart';
 
 Future<void> main() async {
@@ -69,15 +67,7 @@ class MyApp extends StatelessWidget {
                 stream: firebaseAuth.authStateChanges(),
                 builder: (ctx, snapshot) => snapshot.hasData
                     ? const ProductOverviewScreen()
-                    // :
-                    // FutureBuilder(
-                    //     future: authData.tryAutoLogin(),
-                    //     builder: (ctx, authDataSnapshot) =>
-                    //         authDataSnapshot.connectionState ==
-                    //                 ConnectionState.waiting
-                    //             ? const SplashScreen()
                     : const AuthScreen(),
-                // ),
               ),
           ProductDetailsScreen.routeName: (_) => const ProductDetailsScreen(),
           CartScreen.routeName: (_) => const CartScreen(),

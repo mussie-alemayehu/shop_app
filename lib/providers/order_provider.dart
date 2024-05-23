@@ -43,39 +43,31 @@ class Order with ChangeNotifier {
 
   // to initialize the orders of the current user when the app starts
   Future<void> fetchAndSetOrders() async {
-    // final uid = FirebaseAuth.instance.currentUser!.uid;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    // database.ref('orders/$uid').onValue.listen(
-    //       (event) {},
-    //     );
-    //   var url = Uri.parse(
-    //       'https://flutter-app-d20fe-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token');
-    //   try {
-    //     final response = await http.get(url);
-    //     if (response.statusCode >= 400) {
-    //       throw HttpException('Loading orders from server failed.');
-    //     }
-    //     final loadedOrders = jsonDecode(response.body) as Map<String, dynamic>?;
-    //     if (loadedOrders == null) {
-    //       _orders = [];
-    //       return;
-    //     }
-    //     final List<OrderItem> extractedOrders = [];
-    //     loadedOrders.forEach(
-    //       (key, order) => extractedOrders.add(
-    //         OrderItem(
-    //           id: key,
-    //           cartProducts: convertToListOfCartItem(order['cartProducts']),
-    //           total: order['totalAmount'],
-    //           dateTime: DateTime.parse(order['dateTime']),
-    //         ),
-    //       ),
-    //     );
-    //     _orders = extractedOrders;
-    //     notifyListeners();
-    //   } catch (error) {
-    //     rethrow;
-    //   }
+    // initialize a listener that will be updated whenever there is an update
+    // in the database about orders
+    database.ref('orders/$uid').onValue.listen(
+      (event) {
+        final List<OrderItem> extractedOrders = [];
+        final data = (event.snapshot.value as Map);
+        data.forEach(
+          (key, value) {
+            extractedOrders.add(
+              OrderItem(
+                id: key,
+                total: value['totalAmount'],
+                cartProducts: convertToListOfCartItem(value['cartProducts']),
+                dateTime: DateTime.parse(value['dateTime']),
+              ),
+            );
+          },
+        );
+
+        _orders = extractedOrders;
+        notifyListeners();
+      },
+    );
   }
 
   Future<void> addOrder(OrderItem cart) async {
@@ -99,32 +91,5 @@ class Order with ChangeNotifier {
       'totalAmount': cart.total,
       'dateTime': cart.dateTime.toIso8601String(),
     });
-
-    //   var url = Uri.parse(
-    //       'https://flutter-app-d20fe-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token');
-    //   try {
-    //     final response = await http.post(
-    //       url,
-    //       body: json.encode({
-    //         'cartProducts': cart.cartProducts
-    //             .map(
-    //               (cartItem) => {
-    //                 'id': cartItem.id,
-    //                 'title': cartItem.title,
-    //                 'price': cartItem.price,
-    //                 'quantity': cartItem.quantity,
-    //               },
-    //             )
-    //             .toList(),
-    //         'totalAmount': cart.total,
-    //         'dateTime': cart.dateTime.toIso8601String(),
-    //       }),
-    //     );
-    //     cart.id = json.decode(response.body)['name'];
-    //     _orders.insert(0, cart);
-    //     notifyListeners();
-    //   } catch (error) {
-    //     rethrow;
-    //   }
   }
 }
