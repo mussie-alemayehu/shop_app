@@ -37,16 +37,6 @@ class ProductItem extends StatelessWidget {
               onPressed: () async {
                 await product.toggleFavorite();
               },
-              // product.toggleFavorite().catchError((error) {
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(
-              //       content: Text(
-              //         'Unable to complete.',
-              //         textAlign: TextAlign.center,
-              //       ),
-              //     ),
-              //   );
-              // }),
             ),
             title: FittedBox(
               fit: BoxFit.scaleDown,

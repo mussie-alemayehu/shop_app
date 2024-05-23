@@ -1,9 +1,7 @@
-// import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
+import 'package:firebase_database/firebase_database.dart';
 
-// import '../models/http_exception.dart';
 import './cart_provider.dart';
 
 class OrderItem {
@@ -22,10 +20,9 @@ class OrderItem {
 
 class Order with ChangeNotifier {
   List<OrderItem> _orders = [];
-  // final String token;
-  // final String userId;
 
-  // Order(this.token, this.userId, this._orders);
+  // create an instance of the firebase realtime database
+  final database = FirebaseDatabase.instance;
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -44,7 +41,13 @@ class Order with ChangeNotifier {
         .toList();
   }
 
+  // to initialize the orders of the current user when the app starts
   Future<void> fetchAndSetOrders() async {
+    // final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // database.ref('orders/$uid').onValue.listen(
+    //       (event) {},
+    //     );
     //   var url = Uri.parse(
     //       'https://flutter-app-d20fe-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token');
     //   try {
@@ -73,9 +76,30 @@ class Order with ChangeNotifier {
     //   } catch (error) {
     //     rethrow;
     //   }
-    // }
+  }
 
-    // Future<void> addOrder(OrderItem cart) async {
+  Future<void> addOrder(OrderItem cart) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // extract the cart products as a map
+    final cartProducts = cart.cartProducts
+        .map<Map<String, dynamic>>(
+          (cartProduct) => {
+            'id': cartProduct.id,
+            'title': cartProduct.title,
+            'price': cartProduct.price,
+            'quantity': cartProduct.quantity,
+          },
+        )
+        .toList();
+
+    // store the cart data on the database
+    await database.ref('orders/$uid').push().set({
+      'cartProducts': cartProducts,
+      'totalAmount': cart.total,
+      'dateTime': cart.dateTime.toIso8601String(),
+    });
+
     //   var url = Uri.parse(
     //       'https://flutter-app-d20fe-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token');
     //   try {

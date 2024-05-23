@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/cart_item.dart';
+import '../providers/order_provider.dart';
 import '../providers/cart_provider.dart' hide CartItem;
 
 class CartScreen extends StatefulWidget {
@@ -59,48 +60,48 @@ class _CartScreenState extends State<CartScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              // try {
-                              //   await Provider.of<Order>(context, listen: false)
-                              //       .addOrder(
-                              //     OrderItem(
-                              //       cartProducts: cartList,
-                              //       total: cartData.totalPrice,
-                              //       dateTime: DateTime.now(),
-                              //     ),
-                              //   );
-                              //   cartData.clearCart();
-                              //   setState(() {
-                              //     _isLoading = false;
-                              //   });
-                              // } catch (error) {
-                              //   if (context.mounted) {
-                              //     await showDialog(
-                              //       context: context,
-                              //       builder: (ctx) => AlertDialog(
-                              //         title:
-                              //             const Text('Adding orders failed.'),
-                              //         content:
-                              //             const Text('Please try again later.'),
-                              //         actions: [
-                              //           TextButton(
-                              //             onPressed: () {
-                              //               Navigator.of(context).pop();
-                              //             },
-                              //             child: Text(
-                              //               'Ok',
-                              //               style: TextStyle(
-                              //                   color: Theme.of(context)
-                              //                       .primaryColor),
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       ),
-                              //     );
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              // }
-                              // }
+                              try {
+                                await Provider.of<Order>(context, listen: false)
+                                    .addOrder(
+                                  OrderItem(
+                                    cartProducts: cartList,
+                                    total: cartData.totalPrice,
+                                    dateTime: DateTime.now(),
+                                  ),
+                                );
+                                cartData.clearCart();
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              } catch (error) {
+                                if (context.mounted) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title:
+                                          const Text('Adding orders failed.'),
+                                      content:
+                                          const Text('Please try again later.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            'Ok',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
+                              }
                             }
                           },
                     style: ButtonStyle(
