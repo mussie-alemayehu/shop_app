@@ -27,6 +27,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
 
   @override
   void didChangeDependencies() {
+    // we want to check if we are on the first build of this screen before we
+    // initialize our items because we won't need to do that if we have already
+    // initialized them
     if (_isInit) {
       setState(() {
         _isLoading = true;
@@ -70,12 +73,13 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My App'),
+        title: const Text('Items'),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           PopupMenuButton(
             itemBuilder: (_) {
               return [
+                // this item will display favorite items only
                 PopupMenuItem(
                   onTap: () {
                     setState(() {
@@ -85,6 +89,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                   value: FilterOptions.favorite,
                   child: const Text('Show Favorite Only'),
                 ),
+                // this item will the setting to all items
                 PopupMenuItem(
                   onTap: () {
                     setState(() {
@@ -97,6 +102,8 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ];
             },
           ),
+          // this icon will take the user to the cart screen
+          // also, it will display how many items there are in the cart with a badge
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
               itemCount: cart.itemCount,
