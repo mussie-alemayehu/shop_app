@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
-          primarySwatch: Colors.purple,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: Colors.purple,
             secondary: Colors.deepOrange,
           ),
           canvasColor: const Color.fromARGB(235, 255, 239, 254),
