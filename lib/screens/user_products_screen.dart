@@ -22,8 +22,8 @@ class UserProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Your Products'),
+        backgroundColor: const Color(0xFFF9F9F9),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

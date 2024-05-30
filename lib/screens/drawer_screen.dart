@@ -13,7 +13,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(children: [
         AppBar(
           title: const Text('Menu'),
-          // automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFFF9F9F9),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),

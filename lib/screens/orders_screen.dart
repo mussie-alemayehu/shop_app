@@ -15,7 +15,7 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Orders'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: const Color(0xFFF9F9F9),
       ),
       body: FutureBuilder(
           future:

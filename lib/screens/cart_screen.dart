@@ -25,7 +25,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Cart'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: const Color(0xFFF9F9F9),
       ),
       body: Column(children: [
         Card(
