@@ -17,13 +17,6 @@ class ProductItem extends StatelessWidget {
     // previousProductItem = ClipRRect(
     //   borderRadius: BorderRadius.circular(10),
     //   child: GestureDetector(
-    //     onTap: () {
-    //       Navigator.pushNamed(
-    //         context,
-    //         ProductDetailsScreen.routeName,
-    //         arguments: product.id,
-    //       );
-    //     },
     //     child: GridTile(
     //       footer: GridTileBar(
     //         backgroundColor: Colors.black87,
@@ -77,14 +70,23 @@ class ProductItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Colors.grey, width: 3),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Hero(
-              tag: product.id,
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/placeholder.png'),
-                image: NetworkImage(product.imageUrl),
-                fit: BoxFit.cover,
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                ProductDetailsScreen.routeName,
+                arguments: product.id,
+              );
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Hero(
+                tag: product.id,
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/placeholder.png'),
+                  image: NetworkImage(product.imageUrl),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
