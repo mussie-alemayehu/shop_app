@@ -51,3 +51,6 @@ android/app/google-services.json
 /windows/
 /linux/
 /macos/
+
+# miscellaneous
+/.vs/
