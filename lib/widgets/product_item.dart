@@ -70,24 +70,29 @@ class ProductItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Colors.grey, width: 3),
           ),
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                ProductDetailsScreen.routeName,
-                arguments: product.id,
-              );
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Hero(
-                tag: product.id,
-                child: FadeInImage(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Stack(
+              children: <Widget>[
+                FadeInImage(
                   placeholder: const AssetImage('assets/placeholder.png'),
                   image: NetworkImage(product.imageUrl),
                   fit: BoxFit.cover,
                 ),
-              ),
+                Positioned.fill(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          ProductDetailsScreen.routeName,
+                          arguments: product.id,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
