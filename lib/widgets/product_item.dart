@@ -68,7 +68,10 @@ class ProductItem extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey, width: 3),
+            border: Border.all(
+              color: Colors.black.withOpacity(0.04),
+              width: 1,
+            ),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
