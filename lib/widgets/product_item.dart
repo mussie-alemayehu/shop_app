@@ -77,16 +77,25 @@ class ProductItem extends StatelessWidget {
           Positioned(
             top: 0,
             right: 0,
-            child: IconButton(
-              icon: Icon(
-                product.isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border_outlined,
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.black12,
               ),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () async {
-                await product.toggleFavorite();
-              },
+              child: IconButton(
+                icon: Icon(
+                  product.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border_outlined,
+                ),
+                color: product.isFavorite
+                    ? Theme.of(context).colorScheme.secondary
+                    : Colors.white,
+                // : Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                onPressed: () async {
+                  await product.toggleFavorite();
+                },
+              ),
             ),
           ),
           Positioned(
