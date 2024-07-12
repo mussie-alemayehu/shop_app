@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:provider/provider.dart';
 
+import './cart_screen.dart';
+import '../providers/cart_provider.dart';
 import '../providers/products_provider.dart';
+import '../widgets/badge.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   static const routeName = '/product_details';
@@ -34,6 +37,20 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
+            actions: [
+              Consumer<Cart>(
+                builder: (_, cart, ch) => Badge(
+                  itemCount: cart.itemCount,
+                  child: ch!,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                ),
+              ),
+            ],
           ),
           SliverList(
             delegate: SliverChildListDelegate(
