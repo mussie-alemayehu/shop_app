@@ -115,7 +115,7 @@ class ProductItem extends StatelessWidget {
             child: Tooltip(
               message: 'Add to Cart',
               child: IconButton(
-                icon: const Icon(Icons.shopping_cart),
+                icon: const Icon(Icons.add_shopping_cart),
                 color: Theme.of(context).colorScheme.primary,
                 onPressed: () {
                   cartData.addItem(
