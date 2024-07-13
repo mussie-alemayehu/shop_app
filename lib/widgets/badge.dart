@@ -23,12 +23,13 @@ class Badge extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: Text(
               itemCount.toString(),
               style: const TextStyle(
                 fontSize: 10,
+                color: Colors.white,
                 fontFamily: 'Lato',
               ),
             ),

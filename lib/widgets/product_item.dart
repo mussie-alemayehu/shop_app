@@ -21,12 +21,14 @@ class ProductItem extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
+      // to put the favorite icon on top of the product, we will use a stack widget
       child: Stack(
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // display the product image in a container
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -38,6 +40,7 @@ class ProductItem extends StatelessWidget {
                 alignment: Alignment.center,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
+                  // use stack to create a splash effect when the image is clicked
                   child: Stack(
                     children: <Widget>[
                       FadeInImage(
@@ -67,13 +70,21 @@ class ProductItem extends StatelessWidget {
                 product.title,
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('\$ ${product.price}', textAlign: TextAlign.left),
+              Text(
+                '\$ ${product.price}',
+                style: TextStyle(
+                  color: Colors.green.shade600,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.left,
+              ),
             ],
           ),
+          // the favorite icon comes here
           Positioned(
             top: 0,
             right: 0,
@@ -89,41 +100,44 @@ class ProductItem extends StatelessWidget {
                       : Icons.favorite_border_outlined,
                 ),
                 color: product.isFavorite
-                    ? Theme.of(context).colorScheme.secondary
+                    ? Theme.of(context).colorScheme.primary
                     : Colors.white,
-                // : Theme.of(context).colorScheme.secondary.withOpacity(0.5),
                 onPressed: () async {
                   await product.toggleFavorite();
                 },
               ),
             ),
           ),
+          // the shopping cart button comes here
           Positioned(
             bottom: 0,
             right: 0,
-            child: IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () {
-                cartData.addItem(
-                  itemId: product.id,
-                  itemPrice: product.price,
-                  itemTitle: product.title,
-                );
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Item added to Cart!'),
-                    duration: const Duration(seconds: 2),
-                    action: SnackBarAction(
-                      label: 'UNDO',
-                      onPressed: () {
-                        cartData.removeSingleItem(product.id);
-                      },
+            child: Tooltip(
+              message: 'Add to Cart',
+              child: IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                color: Theme.of(context).colorScheme.primary,
+                onPressed: () {
+                  cartData.addItem(
+                    itemId: product.id,
+                    itemPrice: product.price,
+                    itemTitle: product.title,
+                  );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Item added to Cart!'),
+                      duration: const Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          cartData.removeSingleItem(product.id);
+                        },
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],

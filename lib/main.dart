@@ -48,9 +48,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: const Color.fromARGB(255, 244, 244, 244),
-          colorScheme: const ColorScheme.light(
-            primary: Colors.purple,
-            secondary: Colors.deepOrange,
+          colorScheme: ColorScheme.light(
+            // primary: const Color.fromARGB(255, 39, 60, 176),
+            secondary: Colors.grey.shade800,
           ),
           canvasColor: const Color.fromARGB(235, 255, 239, 254),
           fontFamily: 'Lato',

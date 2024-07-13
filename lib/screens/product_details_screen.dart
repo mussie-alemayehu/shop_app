@@ -28,7 +28,7 @@ class ProductDetailsScreen extends StatelessWidget {
             pinned: true,
             backgroundColor: const Color(0xFFF9F9F9),
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(product.title),
+              // title: Text(product.title),
               background: Hero(
                 tag: product.id,
                 child: Image.network(
@@ -55,15 +55,34 @@ class ProductDetailsScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                Text(
-                  '\$${product.price}',
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    product.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    '\$${product.price}',
+                    style: TextStyle(
+                      color: Colors.green.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  product.description,
-                  textAlign: TextAlign.center,
-                  softWrap: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    product.description,
+                    softWrap: true,
+                  ),
                 ),
                 const SizedBox(height: 800),
               ],
