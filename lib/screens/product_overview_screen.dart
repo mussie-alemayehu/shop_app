@@ -73,7 +73,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Items'),
+        title: Text(_favoriteOnly ? 'Favorites' : 'Items'),
         backgroundColor: const Color(0xFFF9F9F9),
         actions: [
           PopupMenuButton(
@@ -135,7 +135,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                   ? products.where((product) => product.isFavorite).toList()
                   : products,
             ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(context),
     );
   }
 }

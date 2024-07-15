@@ -72,7 +72,7 @@ class OrdersScreen extends StatelessWidget {
               );
             }
           }),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(context),
     );
   }
 }

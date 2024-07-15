@@ -5,7 +5,9 @@ import './orders_screen.dart';
 import '../providers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final BuildContext mainContext;
+
+  const AppDrawer(this.mainContext, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +47,11 @@ class AppDrawer extends StatelessWidget {
           title: const Text('My Products'),
         ),
         ListTile(
-          onTap: () {
+          onTap: () async {
             Navigator.of(context).pop();
-            Auth.logout();
+            final mainNavigator = Navigator.of(mainContext);
+            await Auth.logout();
+            mainNavigator.pushReplacementNamed('/');
           },
           leading: const Icon(Icons.exit_to_app),
           title: const Text('Logout'),

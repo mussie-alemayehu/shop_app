@@ -39,7 +39,7 @@ class UserProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(context),
       body: FutureBuilder(
         future: _refreshProducts(context),
         builder: (ctx, snapshot) => snapshot.connectionState ==
