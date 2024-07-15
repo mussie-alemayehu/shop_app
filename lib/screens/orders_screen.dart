@@ -16,6 +16,14 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Orders'),
         backgroundColor: const Color(0xFFF9F9F9),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=56'),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
           future:
@@ -35,13 +43,23 @@ class OrdersScreen extends StatelessWidget {
               return Consumer<Order>(
                 builder: (ctx, orderData, _) {
                   return (orderData.orders.isEmpty)
-                      ? const Center(
-                          child: Text(
-                            'There are no orders at the moment. You will find your orders here once you have added some.',
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            style: TextStyle(
-                              fontSize: 14,
+                      ? Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.15),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'There are no orders at the moment. You will find your orders here once you have added some.',
+                              textAlign: TextAlign.center,
+                              softWrap: true,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         )

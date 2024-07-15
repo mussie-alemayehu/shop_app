@@ -31,32 +31,59 @@ class UserProductsScreen extends StatelessWidget {
               Navigator.of(context).pushNamed(EditProductsScreen.routeName);
             },
           ),
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=56'),
+            ),
+          ),
         ],
       ),
       drawer: const AppDrawer(),
       body: FutureBuilder(
         future: _refreshProducts(context),
-        builder: (ctx, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  )
-                : Consumer<ProductsProvider>(
-                    builder: (ctx, productsData, _) => RefreshIndicator(
-                      onRefresh: () => _refreshProducts(context),
-                      color: Theme.of(context).primaryColor,
-                      child: ListView.builder(
-                        itemCount: productsData.currentUserProducts.length,
-                        itemBuilder: (_, index) => UserProductsListItem(
-                          productsData.currentUserProducts[index].id,
-                          productsData.currentUserProducts[index].title,
-                          productsData.currentUserProducts[index].imageUrl,
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor,
+                ),
+              )
+            : Consumer<ProductsProvider>(
+                builder: (ctx, productsData, _) => RefreshIndicator(
+                  onRefresh: () => _refreshProducts(context),
+                  color: Theme.of(context).primaryColor,
+                  child: productsData.currentUserProducts.isEmpty
+                      ? Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * 0.15),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'You have not added any products at the moment. Tap the add button at the top to start adding some.',
+                              textAlign: TextAlign.center,
+                              softWrap: true,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: productsData.currentUserProducts.length,
+                          itemBuilder: (_, index) => UserProductsListItem(
+                            productsData.currentUserProducts[index].id,
+                            productsData.currentUserProducts[index].title,
+                            productsData.currentUserProducts[index].imageUrl,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
       ),
     );
   }

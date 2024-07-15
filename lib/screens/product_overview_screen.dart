@@ -116,6 +116,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               },
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.only(right: 8.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=56'),
+            ),
+          ),
         ],
       ),
       body: _isLoading

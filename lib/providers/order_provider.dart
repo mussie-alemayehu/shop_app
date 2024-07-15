@@ -44,25 +44,26 @@ class Order with ChangeNotifier {
   // to initialize the orders of the current user when the app starts
   Future<void> fetchAndSetOrders() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-
     // initialize a listener that will be updated whenever there is an update
     // in the database about orders
     database.ref('orders/$uid').onValue.listen(
       (event) {
         final List<OrderItem> extractedOrders = [];
-        final data = (event.snapshot.value as Map);
-        data.forEach(
-          (key, value) {
-            extractedOrders.add(
-              OrderItem(
-                id: key,
-                total: value['totalAmount'],
-                cartProducts: convertToListOfCartItem(value['cartProducts']),
-                dateTime: DateTime.parse(value['dateTime']),
-              ),
-            );
-          },
-        );
+        final data = (event.snapshot.value as Map?);
+        if (data != null) {
+          data.forEach(
+            (key, value) {
+              extractedOrders.add(
+                OrderItem(
+                  id: key,
+                  total: value['totalAmount'],
+                  cartProducts: convertToListOfCartItem(value['cartProducts']),
+                  dateTime: DateTime.parse(value['dateTime']),
+                ),
+              );
+            },
+          );
+        }
 
         _orders = extractedOrders;
         notifyListeners();

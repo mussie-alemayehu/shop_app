@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import '../models/http_exception.dart';
 import '../providers/auth.dart';
 
 enum AuthMode { login, signUp }
@@ -155,7 +155,7 @@ class _FormCardState extends State<FormCard>
         } else {
           await Auth.signup(_userInfo);
         }
-      } on HttpException catch (error) {
+      } on FirebaseException catch (error) {
         var message = 'Authentication failed.';
         if (error.toString().contains('INVALID_LOGIN_CREDENTIALS')) {
           message = 'Email-Password combination incorrect.';
@@ -166,7 +166,7 @@ class _FormCardState extends State<FormCard>
         }
         _showErrorDialog(message);
       } catch (error) {
-        rethrow;
+        _showErrorDialog('Unknown error occured.');
       }
 
       setState(() {
