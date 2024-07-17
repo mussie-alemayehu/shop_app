@@ -102,7 +102,7 @@ class _EditProductsScreenState extends State<EditProductsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: Text(_newProduct.id == '' ? 'Add Product' : 'Edit Product'),
         backgroundColor: const Color(0xFFF9F9F9),
         actions: [
           IconButton(

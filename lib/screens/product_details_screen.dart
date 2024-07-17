@@ -24,14 +24,18 @@ class ProductDetailsScreen extends StatelessWidget {
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
-            primary: true,
             backgroundColor: const Color(0xFFF9F9F9),
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
                 tag: product.id,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).viewInsets.top,
+                  ),
+                  child: Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
