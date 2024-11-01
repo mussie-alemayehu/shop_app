@@ -14,7 +14,6 @@ import './screens/edit_products_screen.dart';
 import './providers/cart_provider.dart';
 import './providers/products_provider.dart';
 import './providers/order_provider.dart';
-import './helpers/custom_route.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,12 +55,6 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Lato',
           inputDecorationTheme: InputDecorationTheme(
             focusColor: Theme.of(context).primaryColor,
-          ),
-          pageTransitionsTheme: PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android: CustomPageTransitionsBuilder(),
-              TargetPlatform.iOS: CustomPageTransitionsBuilder(),
-            },
           ),
         ),
         routes: {

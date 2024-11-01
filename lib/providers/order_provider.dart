@@ -22,7 +22,7 @@ class Order with ChangeNotifier {
   List<OrderItem> _orders = [];
 
   // create an instance of the firebase realtime database
-  final database = FirebaseDatabase.instance;
+  final _database = FirebaseDatabase.instance;
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -45,8 +45,8 @@ class Order with ChangeNotifier {
   Future<void> fetchAndSetOrders() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     // initialize a listener that will be updated whenever there is an update
-    // in the database about orders
-    database.ref('orders/$uid').onValue.listen(
+    // in the _database about orders
+    _database.ref('orders/$uid').onValue.listen(
       (event) {
         final List<OrderItem> extractedOrders = [];
         final data = (event.snapshot.value as Map?);
@@ -86,8 +86,8 @@ class Order with ChangeNotifier {
         )
         .toList();
 
-    // store the cart data on the database
-    await database.ref('orders/$uid').push().set({
+    // store the cart data on the _database
+    await _database.ref('orders/$uid').push().set({
       'cartProducts': cartProducts,
       'totalAmount': cart.total,
       'dateTime': cart.dateTime.toIso8601String(),
